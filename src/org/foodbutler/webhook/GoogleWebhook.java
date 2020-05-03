@@ -99,7 +99,7 @@ public class GoogleWebhook extends DialogflowApp{
 		
 		//Google ui
 		BasicCard card = new BasicCard();
-		card.setTitle("Food Butler");
+		card.setTitle("Good Boy");
 		card.setFormattedText("Raaghav is a good boy");
 		
 		
@@ -120,7 +120,7 @@ public class GoogleWebhook extends DialogflowApp{
 		
 		//Google ui
 		BasicCard card = new BasicCard();
-		card.setTitle("Food Butler");
+		card.setTitle("Bad Boy");
 		card.setFormattedText("Voldemort is a bad boy");
 		
 		
