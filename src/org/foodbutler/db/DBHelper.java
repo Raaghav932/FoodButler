@@ -1,0 +1,58 @@
+package org.foodbutler.db;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.tinylog.Logger;
+
+public class DBHelper {
+	private final String url = "jdbc:postgresql://localhost:5432/FoodButler";
+	private final String user = "butler";
+	private final String password = "foodbutler";
+	
+    private Connection connect() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            Logger.info("Connected to the PostgreSQL server successfully.");
+        } catch (SQLException e) {
+            Logger.error(e);
+        }
+
+        return conn;
+    }
+    
+    public String getClosestStore(String name){
+    	Logger.info("in the getClosestStore method");
+    	Connection conn = connect();
+    	final String sqlSelect = "select name \n" + 
+    			"from stores\n" + 
+    			"where\n" + 
+    			"	distance = (\n" + 
+    			"		select\n" + 
+    			"		MIN(distance)\n" + 
+    			"		from stores, stock\n" + 
+    			"		where stock.name = (?)\n" + 
+    			"		AND\n" + 
+    			"		stock.name_of_store = stores.name\n" + 
+    			"	)\n";
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(sqlSelect);
+    		ps.setString(1, name);
+    		ResultSet rs = ps.executeQuery();
+    		while(rs.next()) {
+    			return rs.getString("name");
+    		}
+    		return ps.enquoteLiteral(sqlSelect);
+    	}catch(SQLException e){
+    		Logger.warn(e);
+    		return "There is a problem "+e;
+    	}catch(Exception e) {
+    		Logger.warn(e);
+    		return "There is a problem "+e;
+    	}
+    }
+}
