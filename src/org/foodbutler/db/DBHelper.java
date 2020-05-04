@@ -29,6 +29,7 @@ public class DBHelper {
     public String getClosestStore(String name){
     	Logger.info("in the getClosestStore method");
     	Connection conn = connect();
+    	Logger.info("connected to database");
     	final String sqlSelect = "select name \n" + 
     			"from stores\n" + 
     			"where\n" + 
