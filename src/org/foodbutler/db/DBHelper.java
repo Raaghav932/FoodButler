@@ -27,7 +27,7 @@ public class DBHelper {
 //        return conn;
 //    }
 	private static Connection getConnection() throws URISyntaxException, SQLException {
-	    String dbUrl = System.getenv("jdbc:postgresql://localhost:5432/FoodButler");
+	    String dbUrl = System.getenv("postgres://liyyjhbihezjus:e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/deiakrethhr73");
 	    return DriverManager.getConnection(dbUrl);
 	}
     public String getClosestStore(String name) throws URISyntaxException, SQLException{
