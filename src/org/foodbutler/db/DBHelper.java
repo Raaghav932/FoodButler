@@ -11,7 +11,7 @@ import org.tinylog.Logger;
 //jdbc:postgresql://localhost:5432/FoodButler
 //postgres://liyyjhbihezjus:e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/deiakrethhr73
 public class DBHelper {
-	private final String url = "jdbc:postgresql://localhost:5432/FoodButler";
+	private final String url = "postgres://liyyjhbihezjus:e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/deiakrethhr73";
 	private final String user = "butler";
 	private final String password = "foodbutler";
 	
