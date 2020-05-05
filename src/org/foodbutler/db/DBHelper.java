@@ -1,5 +1,6 @@
 package org.foodbutler.db;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,17 +12,24 @@ import org.tinylog.Logger;
 //jdbc:postgresql://localhost:5432/FoodButler
 //postgres://liyyjhbihezjus:e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/deiakrethhr73
 public class DBHelper {
-	private final String url = "jec2-18-235-20-228.compute-1.amazonaws.com";
-	private final String user = "liyyjhbihezjus";
-	private final String password = "e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b";
+//	private final String url = "jec2-18-235-20-228.compute-1.amazonaws.com";
+//	private final String user = "liyyjhbihezjus";
+//	private final String password = "e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b";
 	
     private Connection connect() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
             Logger.info("Connected to the PostgreSQL server successfully.");
+            return DriverManager.getConnection(dbUrl, username, password);
         } catch (SQLException e) {
             Logger.error(e);
+        } catch (URISyntaxException e) {
+        	Logger.error(e);
         }
 
         return conn;
