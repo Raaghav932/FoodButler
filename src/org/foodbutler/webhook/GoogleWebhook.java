@@ -1,6 +1,7 @@
 package org.foodbutler.webhook;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,10 +22,15 @@ import org.tinylog.Logger;
 
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
+import com.google.actions.api.Capability;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
+import com.google.actions.api.response.helperintent.SelectionList;
 import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
+import com.google.api.services.actions_fulfillment.v2.model.Image;
+import com.google.api.services.actions_fulfillment.v2.model.ListSelectListItem;
+import com.google.api.services.actions_fulfillment.v2.model.OptionInfo;
 import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 
 @Path("ga")
@@ -156,6 +162,82 @@ public class GoogleWebhook extends DialogflowApp{
 				 .add(card)
 				 .build();
 		return response;
+	}
+	
+	
+	@ForIntent("List")
+	public ActionResponse list(ActionRequest request) {
+	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+	  if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
+	    return responseBuilder
+	        .add("Sorry, try ths on a screen device or select the phone surface in the simulator.")
+	        .add("Which response would you like to see next?")
+	        .build();
+	  }
+
+	  responseBuilder
+	      .add("This is a list example.")
+	      .add(
+	          new SelectionList()
+	              .setTitle("List Title")
+	              .setItems(
+	                  Arrays.asList(
+	                      new ListSelectListItem()
+	                          .setTitle("Title of First List Item")
+	                          .setDescription("This is a description of a list item.")
+	                          .setImage(
+	                              new Image()
+	                                  .setUrl(
+	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
+	                                  .setAccessibilityText("Image alternate text"))
+	                          .setOptionInfo(
+	                              new OptionInfo()
+	                                  .setKey("SELECTION_KEY_ONE")),
+	                      new ListSelectListItem()
+	                          .setTitle("Google Home")
+	                          .setDescription(
+	                              "Google Home is a voice-activated speaker powered by the Google Assistant.")
+	                          .setImage(
+	                              new Image()
+	                                  .setUrl(
+	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
+	                                  .setAccessibilityText("Google Home"))
+	                          .setOptionInfo(
+	                              new OptionInfo()
+	                                  .setSynonyms(
+	                                      Arrays.asList(
+	                                          "Google Home Assistant",
+	                                          "Assistant on the Google Home"))
+	                                  .setKey("SELECTION_KEY_GOOGLE_HOME")),
+	                      new ListSelectListItem()
+	                          .setTitle("Google Pixel")
+	                          .setDescription("Pixel. Phone by Google.")
+	                          .setImage(
+	                              new Image()
+	                                  .setUrl(
+	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
+	                                  .setAccessibilityText("Google Pixel"))
+	                          .setOptionInfo(
+	                              new OptionInfo()
+	                                  .setKey("SELECTION_KEY_GOOGLE_PIXEL")))));
+	  return responseBuilder.build();
+	}
+	@ForIntent("List - OPTION")
+	public ActionResponse listSelected(ActionRequest request) {
+	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+	  String selectedItem = request.getSelectedOption();
+	  String response;
+
+	  if (selectedItem.equals("SELECTION_KEY_ONE")) {
+	    response = "You selected the first item";
+	  } else if (selectedItem.equals("SELECTION_KEY_GOOGLE_HOME")) {
+	    response = "You selected the Google Home!";
+	  } else if (selectedItem.equals("SELECTION_KEY_GOOGLE_PIXEL")) {
+	    response = "You selected the Google Pixel!";
+	  } else {
+	    response = "You did not select a valid item";
+	  }
+	  return responseBuilder.add(response).add("Which response would you like to see next?").build();
 	}
 }
 
