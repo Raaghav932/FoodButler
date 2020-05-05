@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.tinylog.Logger;
 //jdbc:postgresql://localhost:5432/FoodButler
@@ -66,4 +67,34 @@ public class DBHelper {
     		return "There is a problem "+e;
     	}
     }
+    public ArrayList<String> getStores() {
+    	Logger.info("In the get stores methid");
+    	ArrayList<String> stores = new ArrayList<String>();
+    	Connection conn = connect();
+    	final String sqlSelect = "select name from stores";
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(sqlSelect);
+    		ResultSet rs = ps.executeQuery();
+    		while(rs.next()) {
+    			stores.add(rs.getString("name"));
+    		}
+    		return stores;
+    	}catch(SQLException e){
+    		Logger.warn(e);
+    		return stores;
+    	}catch(Exception e) {
+    		Logger.warn(e);
+    		return stores;
+    	}
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

@@ -1,5 +1,6 @@
 package org.foodbutler.webhook;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.foodbutler.db.DBHelper;
 import org.tinylog.Logger;
 
 import com.google.actions.api.ActionRequest;
@@ -127,6 +129,32 @@ public class GoogleWebhook extends DialogflowApp{
 		ActionResponse response = builder.add(simple)
 										 .add(card)
 										 .build();
+		return response;
+	}
+	@ForIntent("GetStoresIntent")
+	public ActionResponse listStores(ActionRequest request) {
+		String listofstores = "Here are the stores I know ";
+		ArrayList<String> arrlist = new ArrayList<String>();
+		ResponseBuilder builder = getResponseBuilder(request);
+		DBHelper helper = new DBHelper();
+		arrlist = helper.getStores();
+		//Google speach
+		SimpleResponse simple = new SimpleResponse();
+		for(String store : arrlist) {
+			listofstores+=" "+store+" ,";
+		}
+		simple.setTextToSpeech(listofstores);
+		
+		
+		//Google ui
+		BasicCard card = new BasicCard();
+		card.setTitle("The stores I know");
+		card.setFormattedText(listofstores);
+		
+		//Set the stuff
+		ActionResponse response = builder.add(simple)
+				 .add(card)
+				 .build();
 		return response;
 	}
 }
