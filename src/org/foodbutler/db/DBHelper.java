@@ -24,8 +24,9 @@ public class DBHelper {
             String username = dbUri.getUserInfo().split(":")[0];
             String password = dbUri.getUserInfo().split(":")[1];
             String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+            Connection connection = DriverManager.getConnection(dbUrl, username, password);
             Logger.info("Connected to the PostgreSQL server successfully.");
-            return DriverManager.getConnection(dbUrl, username, password);
+            return connection;
         } catch (SQLException e) {
             Logger.error(e);
         } catch (URISyntaxException e) {
