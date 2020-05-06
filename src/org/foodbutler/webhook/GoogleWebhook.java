@@ -38,6 +38,7 @@ import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GoogleWebhook extends DialogflowApp{
+	private List<ListSelectListItem> storess;
 	@POST
 	@Path("webhook")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -171,7 +172,7 @@ public class GoogleWebhook extends DialogflowApp{
 	public ActionResponse list(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  List<String> stores = new ArrayList<String>();
-	  List<ListSelectListItem> storess = null;
+	  storess = null;
 	  
 	  DBHelper helper = new DBHelper();
 	  stores = helper.getStoresFromDistance();
