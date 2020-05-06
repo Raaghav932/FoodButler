@@ -92,6 +92,7 @@ public class DBHelper {
     public ArrayList<String> getStoresFromDistance(){
     	Logger.info("In the get stores from distance method");
     	ArrayList<String> stores = new ArrayList<String>();
+    	int count = 0;
     	Connection conn = connect();
     	final String sqlSelect = "select name from stores where distance < 3";
     	try {
@@ -99,7 +100,9 @@ public class DBHelper {
     		ResultSet rs = ps.executeQuery();
     		while(rs.next()) {
     			stores.add(rs.getString("name"));
+    			count++;
     		}
+    		Logger.info(count);
     		return stores;
     	}catch(SQLException e){
     		Logger.warn(e);

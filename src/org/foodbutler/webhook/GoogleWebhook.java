@@ -199,7 +199,8 @@ public class GoogleWebhook extends DialogflowApp{
 	                                  .setKey("SELECTION_KEY_ONE")))));
 	  
 	  for(String name:stores) {
-		mylist.setItems(Arrays.asList(new ListSelectListItem()
+		mylist.setItems(Arrays.asList(
+			new ListSelectListItem()
 				.setTitle(name)
 				.setDescription("asfdsa")
 				.setImage(
