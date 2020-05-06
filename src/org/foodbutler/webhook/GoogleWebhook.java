@@ -3,6 +3,7 @@ package org.foodbutler.webhook;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -141,6 +142,7 @@ public class GoogleWebhook extends DialogflowApp{
 	public ActionResponse listStores(ActionRequest request) {
 		String listofstores = "Here are the stores I know ";
 		ArrayList<String> arrlist = new ArrayList<String>();
+		
 		ResponseBuilder builder = getResponseBuilder(request);
 		DBHelper helper = new DBHelper();
 		arrlist = helper.getStores();
@@ -168,7 +170,9 @@ public class GoogleWebhook extends DialogflowApp{
 	@ForIntent("List")
 	public ActionResponse list(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
-	  ArrayList<String> stores = new ArrayList<String>();
+	  List<String> stores = new ArrayList<String>();
+	  List<ListSelectListItem> storess = null;
+	  
 	  DBHelper helper = new DBHelper();
 	  stores = helper.getStoresFromDistance();
 	  SelectionList mylist = new SelectionList();
@@ -199,8 +203,7 @@ public class GoogleWebhook extends DialogflowApp{
 	                                  .setKey("SELECTION_KEY_ONE")))));
 	  
 	  for(String name:stores) {
-	responseBuilder.add(
-		mylist.setItems(Arrays.asList(
+		  storess.add(
 			new ListSelectListItem()
 				.setTitle(name)
 				.setDescription("asfdsa")
@@ -211,8 +214,9 @@ public class GoogleWebhook extends DialogflowApp{
 				.setOptionInfo(
 					new OptionInfo()
 						.setKey("Not ready yet")
-						))));
+						));
 	  }
+	mylist.setItems(storess);
 	  return responseBuilder.build();
 	}
 	@ForIntent("List - OPTION")
