@@ -199,6 +199,7 @@ public class GoogleWebhook extends DialogflowApp{
 	                                  .setKey("SELECTION_KEY_ONE")))));
 	  
 	  for(String name:stores) {
+	responseBuilder.add(
 		mylist.setItems(Arrays.asList(
 			new ListSelectListItem()
 				.setTitle(name)
@@ -210,7 +211,7 @@ public class GoogleWebhook extends DialogflowApp{
 				.setOptionInfo(
 					new OptionInfo()
 						.setKey("Not ready yet")
-						)));
+						))));
 	  }
 	  return responseBuilder.build();
 	}
