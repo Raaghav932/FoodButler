@@ -168,17 +168,21 @@ public class GoogleWebhook extends DialogflowApp{
 	@ForIntent("List")
 	public ActionResponse list(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+	  ArrayList<String> stores = new ArrayList<String>();
+	  DBHelper helper = new DBHelper();
+	  stores = helper.getStoresFromDistance();
+	  SelectionList mylist = new SelectionList();
+	  
 	  if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
 	    return responseBuilder
 	        .add("Sorry, try ths on a screen device or select the phone surface in the simulator.")
-	        .add("Which response would you like to see next?")
 	        .build();
 	  }
 
-	  responseBuilder
+	responseBuilder
 	      .add("This is a list example.")
 	      .add(
-	          new SelectionList()
+	          mylist
 	              .setTitle("List Title")
 	              .setItems(
 	                  Arrays.asList(
@@ -192,34 +196,21 @@ public class GoogleWebhook extends DialogflowApp{
 	                                  .setAccessibilityText("Image alternate text"))
 	                          .setOptionInfo(
 	                              new OptionInfo()
-	                                  .setKey("SELECTION_KEY_ONE")),
-	                      new ListSelectListItem()
-	                          .setTitle("Google Home")
-	                          .setDescription(
-	                              "Google Home is a voice-activated speaker powered by the Google Assistant.")
-	                          .setImage(
-	                              new Image()
-	                                  .setUrl(
-	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
-	                                  .setAccessibilityText("Google Home"))
-	                          .setOptionInfo(
-	                              new OptionInfo()
-	                                  .setSynonyms(
-	                                      Arrays.asList(
-	                                          "Google Home Assistant",
-	                                          "Assistant on the Google Home"))
-	                                  .setKey("SELECTION_KEY_GOOGLE_HOME")),
-	                      new ListSelectListItem()
-	                          .setTitle("Google Pixel")
-	                          .setDescription("Pixel. Phone by Google.")
-	                          .setImage(
-	                              new Image()
-	                                  .setUrl(
-	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
-	                                  .setAccessibilityText("Google Pixel"))
-	                          .setOptionInfo(
-	                              new OptionInfo()
-	                                  .setKey("SELECTION_KEY_GOOGLE_PIXEL")))));
+	                                  .setKey("SELECTION_KEY_ONE")))));
+	  
+	  for(String name:stores) {
+		mylist.setItems(Arrays.asList(new ListSelectListItem()
+				.setTitle(name)
+				.setDescription("asfdsa")
+				.setImage(
+						new Image()
+						.setUrl("https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
+						.setAccessibilityText("adsfdsaf"))
+				.setOptionInfo(
+					new OptionInfo()
+						.setKey("Not ready yet")
+						)));
+	  }
 	  return responseBuilder.build();
 	}
 	@ForIntent("List - OPTION")
