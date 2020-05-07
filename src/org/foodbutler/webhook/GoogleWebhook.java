@@ -193,7 +193,7 @@ for(String name:stores) {
 						.setAccessibilityText("adsfdsaf"))
 				.setOptionInfo(
 					new OptionInfo()
-						.setKey("Not ready yet")
+						.setKey("Not ready yet"+name)
 						));
 		  			}
 
