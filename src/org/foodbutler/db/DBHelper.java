@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.foodbutler.StoreInfo;
 import org.tinylog.Logger;
 //jdbc:postgresql://localhost:5432/FoodButler
 //postgres://liyyjhbihezjus:e511477a502a343f368e5309b7c85722ee5c33e9068d65ff0c7cbfee872db85b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/deiakrethhr73
@@ -91,17 +92,18 @@ public class DBHelper {
     }
     
     
-    public ArrayList<String> getStoresFromDistance(){
+    public ArrayList<StoreInfo> getStoresFromDistance(){
     	Logger.info("In the get stores from distance method");
-    	ArrayList<String> stores = new ArrayList<String>();
+    	ArrayList<StoreInfo> stores = new ArrayList<StoreInfo>();
     	int count = 0;
     	Connection conn = connect();
-    	final String sqlSelect = "select name from stores where distance < 3";
+    	final String sqlSelect = "select name,address,phonenumber,image from stores where distance < 6";
     	try {
     		PreparedStatement ps = conn.prepareStatement(sqlSelect);
     		ResultSet rs = ps.executeQuery();
     		while(rs.next()) {
-    			stores.add(rs.getString("name"));
+    			StoreInfo store = new StoreInfo(rs.getString("name"),rs.getString("address"),rs.getString("phonenumber"),rs.getString("image"));
+    			stores.add(store);
     			count++;
     		}
     		Logger.info(count);

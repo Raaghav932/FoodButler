@@ -18,6 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.foodbutler.StoreInfo;
 import org.foodbutler.db.DBHelper;
 import org.tinylog.Logger;
 
@@ -173,7 +174,7 @@ public class GoogleWebhook extends DialogflowApp{
 	  List<ListSelectListItem> storeList = new ArrayList<ListSelectListItem>();
 	  
 	  DBHelper helper = new DBHelper();
-	  List<String> stores = helper.getStoresFromDistance();
+	  ArrayList<StoreInfo> stores = helper.getStoresFromDistance();
 	  SelectionList mylist = new SelectionList();
 	  
 	  if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
@@ -182,18 +183,18 @@ public class GoogleWebhook extends DialogflowApp{
 	        .build();
 	  }
 
-for(String name:stores) {
+for(StoreInfo store:stores) {
 		  storeList.add(
 			new ListSelectListItem()
-				.setTitle(name)
-				.setDescription("asfdsa")
+				.setTitle(store.getName())
+				.setDescription(store.getAddress())
 				.setImage(
 						new Image()
-						.setUrl("https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
+						.setUrl(store.getImage())
 						.setAccessibilityText("adsfdsaf"))
 				.setOptionInfo(
 					new OptionInfo()
-						.setKey("Not ready yet"+name)
+						.setKey(store.getName())
 						));
 		  			}
 
