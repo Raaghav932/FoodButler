@@ -38,7 +38,6 @@ import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GoogleWebhook extends DialogflowApp{
-	private List<ListSelectListItem> storess;
 	@POST
 	@Path("webhook")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -171,11 +170,10 @@ public class GoogleWebhook extends DialogflowApp{
 	@ForIntent("List")
 	public ActionResponse list(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
-	  List<String> stores = new ArrayList<String>();
-	  storess = null;
+	  List<ListSelectListItem> storeList = new ArrayList<ListSelectListItem>();
 	  
 	  DBHelper helper = new DBHelper();
-	  stores = helper.getStoresFromDistance();
+	  List<String> stores = helper.getStoresFromDistance();
 	  SelectionList mylist = new SelectionList();
 	  
 	  if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
@@ -184,27 +182,8 @@ public class GoogleWebhook extends DialogflowApp{
 	        .build();
 	  }
 
-	responseBuilder
-	      .add("This is a list example.")
-	      .add(
-	          mylist
-	              .setTitle("List Title")
-	              .setItems(
-	                  Arrays.asList(
-	                      new ListSelectListItem()
-	                          .setTitle("Title of First List Item")
-	                          .setDescription("This is a description of a list item.")
-	                          .setImage(
-	                              new Image()
-	                                  .setUrl(
-	                                      "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png")
-	                                  .setAccessibilityText("Image alternate text"))
-	                          .setOptionInfo(
-	                              new OptionInfo()
-	                                  .setKey("SELECTION_KEY_ONE")))));
-	  
-	  for(String name:stores) {
-		  storess.add(
+for(String name:stores) {
+		  storeList.add(
 			new ListSelectListItem()
 				.setTitle(name)
 				.setDescription("asfdsa")
@@ -216,10 +195,19 @@ public class GoogleWebhook extends DialogflowApp{
 					new OptionInfo()
 						.setKey("Not ready yet")
 						));
-	  }
-	mylist.setItems(storess);
+		  			}
+
+	responseBuilder
+	      .add("This is a list example.")
+	      .add(
+	          mylist
+	              .setTitle("List Title")
+	              .setItems(storeList));
+
 	  return responseBuilder.build();
 	}
+	
+
 	@ForIntent("List - OPTION")
 	public ActionResponse listSelected(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
