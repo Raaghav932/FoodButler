@@ -18,6 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.foodbutler.HttpClient;
 import org.foodbutler.StoreInfo;
 import org.foodbutler.db.DBHelper;
 import org.tinylog.Logger;
@@ -133,7 +134,7 @@ public class GoogleWebhook extends DialogflowApp{
 		card.setTitle("Bad Boy");
 		card.setFormattedText("Voldemort is a bad boy");
 		
-		
+		HttpClient client = new HttpClient();
 		ActionResponse response = builder.add(simple)
 										 .add(card)
 										 .build();
