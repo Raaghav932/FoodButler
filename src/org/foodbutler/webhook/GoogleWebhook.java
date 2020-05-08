@@ -199,10 +199,10 @@ for(StoreInfo store:stores) {
 		  			}
 
 	responseBuilder
-	      .add("This is a list example.")
+	      .add("Here is a list of the stores that match your criteria")
 	      .add(
 	          mylist
-	              .setTitle("List Title")
+	              .setTitle("Stores")
 	              .setItems(storeList));
 
 	  return responseBuilder.build();
@@ -214,17 +214,9 @@ for(StoreInfo store:stores) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  String selectedItem = request.getSelectedOption();
 	  String response;
-
-	  if (selectedItem.equals("SELECTION_KEY_ONE")) {
-	    response = "You selected the first item";
-	  } else if (selectedItem.equals("SELECTION_KEY_GOOGLE_HOME")) {
-	    response = "You selected the Google Home!";
-	  } else if (selectedItem.equals("SELECTION_KEY_GOOGLE_PIXEL")) {
-	    response = "You selected the Google Pixel!";
-	  } else {
-	    response = "You did not select a valid item";
-	  }
-	  return responseBuilder.add(response).add("Which response would you like to see next?").build();
+	  DBHelper helper = new DBHelper();
+	  response = helper.findSelection(selectedItem);
+	  return responseBuilder.add(response).build();
 	}
 }
 

@@ -115,8 +115,28 @@ public class DBHelper {
     		Logger.warn(e);
     		return stores;
     	}
+    	
     }
-    
+    public String findSelection(String selection){
+		Logger.info("in the findSelection method");
+		Connection conn = connect();
+		final String sqlSelect = "select phonenumber from stores where name = (?)";
+		try {
+    		PreparedStatement ps = conn.prepareStatement(sqlSelect);
+    		ps.setString(1, selection);
+    		ResultSet rs = ps.executeQuery();
+    		while(rs.next()) {
+    			return rs.getString("phonenumber");
+    		}
+	}catch(SQLException e){
+		Logger.warn(e);
+		return "There was an error";
+	}catch(Exception e) {
+		Logger.warn(e);
+		return "There was an error";
+	}
+		return "Couldn't find any matches";
+    }
     
     
     
