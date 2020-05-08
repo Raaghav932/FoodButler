@@ -222,7 +222,9 @@ for(StoreInfo store:stores) {
 	@ForIntent("FindFood")
 	public ActionResponse FindFood(ActionRequest request) {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		String response = "You chose " + request.getParameter("food");
+		DBHelper helper = new DBHelper();
+		String store = helper.getClosestStore((String) request.getParameter("food"));
+		String response = "You can get that at " + store;
 		responseBuilder.add(response);
 		return responseBuilder.build();
 	}
