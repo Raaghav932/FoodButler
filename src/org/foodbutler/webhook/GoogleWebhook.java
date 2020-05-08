@@ -218,6 +218,14 @@ for(StoreInfo store:stores) {
 	  response = helper.findSelection(selectedItem);
 	  return responseBuilder.add(response).build();
 	}
+	
+	@ForIntent("FindFood")
+	public ActionResponse FindFood(ActionRequest request) {
+		ResponseBuilder responseBuilder = getResponseBuilder(request);
+		String response = "You chose " + request.getParameter("food");
+		responseBuilder.add(response);
+		return responseBuilder.build();
+	}
 }
 
 
