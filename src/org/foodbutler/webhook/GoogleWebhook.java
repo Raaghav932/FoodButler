@@ -1,5 +1,6 @@
 package org.foodbutler.webhook;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -135,6 +136,21 @@ public class GoogleWebhook extends DialogflowApp{
 		card.setFormattedText("Voldemort is a bad boy");
 		
 		HttpClient client = new HttpClient();
+		try {
+			try {
+				client.sendGet();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}finally {
+			try {
+				client.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		ActionResponse response = builder.add(simple)
 										 .add(card)
 										 .build();

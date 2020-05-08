@@ -21,26 +21,11 @@ public class HttpClient {
     // one instance, reuse
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static void main(String[] args) throws Exception {
-
-        HttpClient obj = new HttpClient();
-
-        try {
-            System.out.println("Testing 1 - Send Http GET request");
-            obj.sendGet();
-
-            System.out.println("Testing 2 - Send Http POST request");
-            obj.sendPost();
-        } finally {
-            obj.close();
-        }
-    }
-
-    private void close() throws IOException {
+    public void close() throws IOException {
         httpClient.close();
     }
 
-    private void sendGet() throws Exception {
+    public void sendGet() throws Exception {
 
         HttpGet request = new HttpGet("https://www.google.com/search?q=mkyong");
 
