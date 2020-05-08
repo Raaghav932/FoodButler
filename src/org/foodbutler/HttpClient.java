@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.tinylog.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,16 +51,16 @@ public class HttpClient {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Get HttpResponse Status
-            System.out.println(response.getStatusLine().toString());
+            Logger.info(response.getStatusLine().toString());
 
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            System.out.println(headers);
+            Logger.info(headers);
 
             if (entity != null) {
                 // return it as a String
                 String result = EntityUtils.toString(entity);
-                System.out.println(result);
+                Logger.info(result);
             }
 
         }
