@@ -45,11 +45,11 @@ public class GoogleWebhook extends DialogflowApp{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String fromGA(@Context HttpHeaders headers, String requestJson) {
-		Logger.trace("got the request from google: {}", requestJson);
+		//Logger.trace("got the request from google: {}", requestJson);
 		String response;
 		try {
 			response = handleRequest(requestJson, getHeadersMap(headers.getRequestHeaders())).get();
-			Logger.trace("returning to google", response);
+			//Logger.trace("returning to google", response);
 		} catch (Throwable throwable) {
 			Logger.error(throwable);
 			response = throwable.getMessage();
