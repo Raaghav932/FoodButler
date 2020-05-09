@@ -39,7 +39,8 @@ public class HttpClient {
 
             // Get HttpResponse Status
             //Logger.info(response.getStatusLine().toString());
-        	JSONArray json = new JSONArray(response);
+        	JSONObject jo = new JSONObject(response);
+        	JSONArray json = new JSONArray(jo);
         	String lat = (String) json.get(6);
             Logger.info(lat);
             HttpEntity entity = response.getEntity();
