@@ -31,13 +31,7 @@ public class HttpClient {
 
         HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=empire%20state%20building&format=json");
 
-        // add request headers
-//        request.addHeader("custom-key", "mkyong");
-//        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
-
         try (CloseableHttpResponse response = httpClient.execute(request)) {
-            //Get HttpResponse Status
-            //Logger.info(response.getStatusLine().toString());
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity);
             
@@ -45,6 +39,7 @@ public class HttpClient {
         	JSONArray json = new JSONArray(result);
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
+        	String lon = (String) e.get("lon");
             Logger.info(lat);
 
         }
