@@ -27,11 +27,11 @@ public class HttpClient {
 
     public void sendGet() throws Exception {
 
-        HttpGet request = new HttpGet("https://www.google.com/search?q=mkyong");
+        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=Empire%20State%20Building&format=json");
 
         // add request headers
-        request.addHeader("custom-key", "mkyong");
-        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
+//        request.addHeader("custom-key", "mkyong");
+//        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
 
