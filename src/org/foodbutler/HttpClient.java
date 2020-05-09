@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.tinylog.Logger;
 
 import java.io.IOException;
@@ -36,16 +37,18 @@ public class HttpClient {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Get HttpResponse Status
-            Logger.info(response.getStatusLine().toString());
-
+            //Logger.info(response.getStatusLine().toString());
+            JSONObject jsonResult = new JSONObject(response);
+            String lat = jsonResult.getString("lat");
+            Logger.info(lat);
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            Logger.info(headers);
+            //Logger.info(headers);
 
             if (entity != null) {
                 // return it as a String
                 String result = EntityUtils.toString(entity);
-                Logger.info(result);
+                //Logger.info(result);
             }
 
         }
