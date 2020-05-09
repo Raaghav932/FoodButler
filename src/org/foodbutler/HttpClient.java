@@ -29,7 +29,7 @@ public class HttpClient {
 
     public void sendGet() throws Exception {
 
-        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=718%20Timothy%20drive&20longmont%20Colorado&format=json");
+        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=empire%20state%20building&format=json");
 
         // add request headers
 //        request.addHeader("custom-key", "mkyong");
