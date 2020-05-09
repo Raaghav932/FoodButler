@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.tinylog.Logger;
 
@@ -39,7 +40,8 @@ public class HttpClient {
             // Get HttpResponse Status
             //Logger.info(response.getStatusLine().toString());
             JSONObject jsonResult = new JSONObject(response);
-            String lat = jsonResult.getString("lat");
+            JSONArray arr = jsonResult.getJSONArray("");
+            String lat = arr.getJSONObject(2).getString("lat");
             Logger.info(lat);
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
