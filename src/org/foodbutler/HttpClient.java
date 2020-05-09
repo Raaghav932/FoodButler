@@ -38,7 +38,7 @@ public class HttpClient {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Get HttpResponse Status
-            Logger.info(response.toString());
+            Logger.info(response.getStatusLine().toString());
         	JSONArray json = new JSONArray(response.toString());
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
