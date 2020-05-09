@@ -38,14 +38,14 @@ public class HttpClient {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Get HttpResponse Status
-            Logger.info(response.getStatusLine().toString());
+            //Logger.info(response.getStatusLine().toString());
         	JSONArray json = new JSONArray(response.toString());
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
             Logger.info(lat);
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            //Logger.info(headers);
+            Logger.info(headers);
 
             if (entity != null) {
                 // return it as a String
