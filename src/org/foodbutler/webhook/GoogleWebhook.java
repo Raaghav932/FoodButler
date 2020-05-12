@@ -255,7 +255,7 @@ for(StoreInfo store:stores) {
 	@ForIntent("FindStore")
 	public ActionResponse FindStore(ActionRequest request) throws Exception {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		Location location = request.getDevice().getLocation();
+		Location location = request.getPlace();
 		String name = request.getUser().getProfile().getDisplayName();
 		HttpClient client = new HttpClient();
 		String store = (String) request.getParameter("store");
