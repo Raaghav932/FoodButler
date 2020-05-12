@@ -255,8 +255,8 @@ for(StoreInfo store:stores) {
 		  }
 		return responseBuilder.build();
 	}
-	@ForIntent("Permission")
-	public ActionResponse getPermission(ActionRequest request) {
+	@ForIntent("user_location")
+	public ActionResponse user_location(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  String[] permissions = new String[] {ConstantsKt.PERMISSION_NAME};
 	  String context = "To address you by name";
