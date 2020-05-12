@@ -233,15 +233,14 @@ for(StoreInfo store:stores) {
 	public ActionResponse FindStore(ActionRequest request) throws Exception {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
 		HttpClient client = new HttpClient();
-		StringBuilder store = (StringBuilder) request.getParameter("store");
+		String store = (String) request.getParameter("store");
 		for(int i = 0; i < store.length(); i++){
 			if(store.charAt(i) == 32) {
-				store.deleteCharAt(i);
-				store.insert(i,"%20");
+			   String temp = store.substring(0,i-1) + "%20" + store.substring(i+1,store.length());
+			   store = temp;
 			}
 		}
-		String send = store.toString();
-		ArrayList<String> distance = client.sendGet(send);
+		ArrayList<String> distance = client.sendGet(store);
 		responseBuilder.add(distance.get(0));
 		responseBuilder.add(distance.get(1));
 		return responseBuilder.build();
