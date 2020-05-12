@@ -27,13 +27,16 @@ import org.tinylog.Logger;
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
 import com.google.actions.api.Capability;
+import com.google.actions.api.ConstantsKt;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
+import com.google.actions.api.response.helperintent.Permission;
 import com.google.actions.api.response.helperintent.SelectionList;
 import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
 import com.google.api.services.actions_fulfillment.v2.model.ListSelectListItem;
+import com.google.api.services.actions_fulfillment.v2.model.Location;
 import com.google.api.services.actions_fulfillment.v2.model.OptionInfo;
 import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 
@@ -232,6 +235,8 @@ for(StoreInfo store:stores) {
 	@ForIntent("FindStore")
 	public ActionResponse FindStore(ActionRequest request) throws Exception {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
+		Location location = request.getDevice().getLocation();
+		String name = request.getUser().getProfile().getDisplayName();
 		HttpClient client = new HttpClient();
 		String store = (String) request.getParameter("store");
 		for(int i = 0; i < store.length(); i++){
@@ -243,7 +248,32 @@ for(StoreInfo store:stores) {
 		ArrayList<String> distance = client.sendGet(store);
 		responseBuilder.add(distance.get(0));
 		responseBuilder.add(distance.get(1));
+		if (request.isPermissionGranted()) {
+		    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
+		  } else {
+		    responseBuilder.add("Looks like I can't get your information");
+		  }
 		return responseBuilder.build();
+	}
+	@ForIntent("Permission")
+	public ActionResponse getPermission(ActionRequest request) {
+	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+	  String[] permissions = new String[] {ConstantsKt.PERMISSION_NAME};
+	  String context = "To address you by name";
+	  // Location permissions only work for verified users
+	  // https://developers.google.com/actions/assistant/guest-users
+	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
+	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
+	    permissions =
+	        new String[] {
+	          ConstantsKt.PERMISSION_NAME, ConstantsKt.PERMISSION_DEVICE_PRECISE_LOCATION
+	        };
+	  }
+	  responseBuilder
+	      .add("PLACEHOLDER")
+	      .add(new Permission().setPermissions(permissions).setContext(context));
+
+	  return responseBuilder.build();
 	}
 }
 
