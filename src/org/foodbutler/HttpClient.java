@@ -27,10 +27,10 @@ public class HttpClient {
         httpClient.close();
     }
 
-    public void sendGet() throws Exception {
+    public ArrayList<String> sendGet() throws Exception {
 
         HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=empire%20state%20building&format=json");
-
+        ArrayList<String> distance = new ArrayList<String>();
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity);
@@ -40,8 +40,9 @@ public class HttpClient {
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
         	String lon = (String) e.get("lon");
-            Logger.info(lat);
-
+        	distance.add(lon);
+        	distance.add(lat);
+        	return distance;
         }
 
     }

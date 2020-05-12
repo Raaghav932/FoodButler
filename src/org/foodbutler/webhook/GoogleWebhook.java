@@ -134,23 +134,6 @@ public class GoogleWebhook extends DialogflowApp{
 		BasicCard card = new BasicCard();
 		card.setTitle("Bad Boy");
 		card.setFormattedText("Voldemort is a bad boy");
-		
-		HttpClient client = new HttpClient();
-		try {
-			try {
-				client.sendGet();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}finally {
-			try {
-				client.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		ActionResponse response = builder.add(simple)
 										 .add(card)
 										 .build();
@@ -243,6 +226,16 @@ for(StoreInfo store:stores) {
 		String store = helper.getClosestStore((String) request.getParameter("food"));
 		String response = "You can get that at " + store;
 		responseBuilder.add(response);
+		return responseBuilder.build();
+	}
+	
+	@ForIntent("FindStore")
+	public ActionResponse FindStore(ActionRequest request) throws Exception {
+		ResponseBuilder responseBuilder = getResponseBuilder(request);
+		HttpClient client = new HttpClient();
+		ArrayList<String> distance = client.sendGet();
+		responseBuilder.add(distance.get(0));
+		responseBuilder.add(distance.get(1));
 		return responseBuilder.build();
 	}
 }
