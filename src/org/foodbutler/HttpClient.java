@@ -29,7 +29,7 @@ public class HttpClient {
 
     public ArrayList<String> sendGet(String store) throws Exception {
 
-        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q=empire%20state%20building&format=json");
+        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+"&format=json");
         ArrayList<String> distance = new ArrayList<String>();
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
