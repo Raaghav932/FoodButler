@@ -256,7 +256,7 @@ for(StoreInfo store:stores) {
 	public ActionResponse FindStore(ActionRequest request) throws Exception {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
 		Location location = request.getPlace();
-		String name = request.getUser().getProfile().getDisplayName();
+		//String name = request.getUser().getProfile().getDisplayName();
 		HttpClient client = new HttpClient();
 		String store = (String) request.getParameter("store");
 		for(int i = 0; i < store.length(); i++){
@@ -269,7 +269,7 @@ for(StoreInfo store:stores) {
 		responseBuilder.add(distance.get(0));
 		responseBuilder.add(distance.get(1));
 		if (request.isPermissionGranted()) {
-		    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
+		    responseBuilder.add("Okay " + ", I see you're at " + location.getFormattedAddress());
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");
 		  }
