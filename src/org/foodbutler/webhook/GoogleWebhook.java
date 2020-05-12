@@ -269,6 +269,7 @@ for(StoreInfo store:stores) {
 		responseBuilder.add(distance.get(0));
 		responseBuilder.add(distance.get(1));
 		if (request.isPermissionGranted()) {
+			Logger.info(location);
 		    responseBuilder.add("Okay " + ", I see you're at " + location.getFormattedAddress());
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");
