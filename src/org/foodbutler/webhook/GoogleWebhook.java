@@ -248,7 +248,6 @@ for(StoreInfo store:stores) {
 	  responseBuilder
 	      .add("PLACEHOLDER")
 	      .add(new Permission().setPermissions(permissions));
-
 	  return responseBuilder.build();
 	}
 	
@@ -275,6 +274,24 @@ for(StoreInfo store:stores) {
 		    responseBuilder.add("Looks like I can't get your information");
 		  }
 		return responseBuilder.build();
+	}
+	
+	@ForIntent("Permission Handler")
+	public ActionResponse handlePermission(ActionRequest request) {
+	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+	  Location location = request.getDevice().getLocation();
+	  String name = request.getUser().getProfile().getDisplayName();
+
+	  if (request.isPermissionGranted()) {
+	    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
+	  } else {
+	    responseBuilder.add("Looks like I can't get your information");
+	  }
+	  responseBuilder
+	      .add("Would you like to try another helper?")
+	      .addSuggestions(new String[] {"Confirmation", "DateTime", "Place"});
+
+	  return responseBuilder.build();
 	}
 }
 
