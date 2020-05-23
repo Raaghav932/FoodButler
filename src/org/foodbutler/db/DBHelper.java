@@ -41,6 +41,8 @@ public class DBHelper {
         return conn;
     }
     public String getClosestStore(String name, double uLat, double uLong){
+    	uLat = uLat + 0;
+    	uLong = uLong + 0;
     	Logger.info("in the getClosestStore method");
     	Connection conn = connect();
     	Logger.info("connected to database");
