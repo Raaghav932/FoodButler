@@ -228,7 +228,7 @@ for(StoreInfo store:stores) {
 		Location location = request.getDevice().getLocation();
 		if (request.isPermissionGranted()) {
 			DBHelper helper = new DBHelper();
-			String store = helper.getClosestStore((String) request.getParameter("food"),location.getCoordinates().getLatitude(), location.getCoordinates().getLongitude());
+			String store = helper.getClosestStore((String) request.getParameter("food"),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
 		    responseBuilder.add("You can get that at " + store);
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");
