@@ -233,9 +233,10 @@ for(StoreInfo store:stores) {
 	}
 	
 	@ForIntent("user_location")
-	public ActionResponse user_location(ActionRequest request) {
+	public ActionResponse getPermission(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  String[] permissions = new String[] {ConstantsKt.PERMISSION_NAME};
+	  String context = "To address you by name";
 	  // Location permissions only work for verified users
 	  // https://developers.google.com/actions/assistant/guest-users
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
@@ -247,7 +248,8 @@ for(StoreInfo store:stores) {
 	  }
 	  responseBuilder
 	      .add("PLACEHOLDER")
-	      .add(new Permission().setPermissions(permissions));
+	      .add(new Permission().setPermissions(permissions).setContext(context));
+
 	  return responseBuilder.build();
 	}
 	
