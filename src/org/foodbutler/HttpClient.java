@@ -35,7 +35,7 @@ public class HttpClient {
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity);
             
-            Logger.info(result);
+            //Logger.info(result);
         	JSONArray json = new JSONArray(result);
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
