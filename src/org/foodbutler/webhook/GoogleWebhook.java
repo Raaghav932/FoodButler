@@ -225,10 +225,14 @@ for(StoreInfo store:stores) {
 	@ForIntent("FindFood")
 	public ActionResponse FindFood(ActionRequest request) {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		DBHelper helper = new DBHelper();
-		String store = helper.getClosestStore((String) request.getParameter("food"));
-		String response = "You can get that at " + store;
-		responseBuilder.add(response);
+		Location location = request.getDevice().getLocation();
+		if (request.isPermissionGranted()) {
+			DBHelper helper = new DBHelper();
+			String store = helper.getClosestStore((String) request.getParameter("food"),location.getCoordinates().getLatitude(), location.getCoordinates().getLongitude());
+		    responseBuilder.add("You can get that at " + store);
+		  } else {
+		    responseBuilder.add("Looks like I can't get your information");
+		  }
 		return responseBuilder.build();
 	}
 	
@@ -278,23 +282,23 @@ for(StoreInfo store:stores) {
 //		return responseBuilder.build();
 //	}
 	
-	@ForIntent("Permission Handler")
-	public ActionResponse handlePermission(ActionRequest request) {
-	  ResponseBuilder responseBuilder = getResponseBuilder(request);
-	  Location location = request.getDevice().getLocation();
-	  String name = request.getUser().getProfile().getDisplayName();
-
-	  if (request.isPermissionGranted()) {
-	    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
-	  } else {
-	    responseBuilder.add("Looks like I can't get your information");
-	  }
-	  responseBuilder
-	      .add("Would you like to try another helper?")
-	      .addSuggestions(new String[] {"Confirmation", "DateTime", "Place"});
-
-	  return responseBuilder.build();
-	}
+//	@ForIntent("Permission Handler")
+//	public ActionResponse handlePermission(ActionRequest request) {
+//	  ResponseBuilder responseBuilder = getResponseBuilder(request);
+//	  Location location = request.getDevice().getLocation();
+//	  String name = request.getUser().getProfile().getDisplayName();
+//
+//	  if (request.isPermissionGranted()) {
+//	    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
+//	  } else {
+//	    responseBuilder.add("Looks like I can't get your information");
+//	  }
+//	  responseBuilder
+//	      .add("Would you like to try another helper?")
+//	      .addSuggestions(new String[] {"Confirmation", "DateTime", "Place"});
+//
+//	  return responseBuilder.build();
+//	}
 }
 
 

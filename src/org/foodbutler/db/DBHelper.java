@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.foodbutler.HttpClient;
 import org.foodbutler.StoreInfo;
 import org.tinylog.Logger;
 //jdbc:postgresql://localhost:5432/FoodButler
@@ -39,16 +40,11 @@ public class DBHelper {
 
         return conn;
     }
-    public String getClosestStore(String name){
+    public String getClosestStore(String name, double uLat, double uLong){
     	Logger.info("in the getClosestStore method");
     	Connection conn = connect();
     	Logger.info("connected to database");
     	final String sqlSelect = "select name \n" + 
-    			"from stores\n" + 
-    			"where\n" + 
-    			"	distance = (\n" + 
-    			"		select\n" + 
-    			"		MIN(distance)\n" + 
     			"		from stores, stock\n" + 
     			"		where stock.name = (?)\n" + 
     			"		AND\n" + 
@@ -58,10 +54,20 @@ public class DBHelper {
     		PreparedStatement ps = conn.prepareStatement(sqlSelect);
     		ps.setString(1, name);
     		ResultSet rs = ps.executeQuery();
+    		HttpClient client = new HttpClient();
+    		double lowestDistance = 1000;
+    		String lowestName = "Couldn't Find anything";
     		while(rs.next()) {
-    			return rs.getString("name");
+    			ArrayList<Double> distance = client.sendGet(rs.getString("name"));
+    			DistanceCalculator calc = new DistanceCalculator();
+    			double dist = calc.distance(uLat, uLong, distance.get(0), distance.get(1));
+    			if (dist < lowestDistance)
+    			{
+    				lowestDistance = dist;
+    				lowestName = rs.getString("name");
+    			}
     		}
-    		return ps.enquoteLiteral(sqlSelect);
+    		return lowestName;
     	}catch(SQLException e){
     		Logger.warn(e);
     		return "There is a problem "+e;
@@ -137,6 +143,8 @@ public class DBHelper {
 	}
 		return "Couldn't find any matches";
     }
+    
+    
     
     
     
