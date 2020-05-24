@@ -59,19 +59,19 @@ public class DBHelper {
     		double lowestDistance = 1000;
     		String lowestName = "Couldn't Find anything";
     		while(rs.next()) {
-    			distance = client.sendGet(rs.getString("name"), zip);
+    			distance = (client.sendGet(rs.getString("name"), zip));
+    	   		DistanceCalculator calc = new DistanceCalculator();
+    			for(int i = 0; i < distance.size(); i++)
+    			{
+    				double dist = calc.distance(uLat, uLong, distance.get(i).getLat(), distance.get(i).getLon());
+    				Logger.info("The distance is "+ dist);
+    				if (dist < lowestDistance)
+    				{
+    					lowestDistance = dist;
+    					lowestName = rs.getString("name");
+    				}
+    			}
     		}
-    		DistanceCalculator calc = new DistanceCalculator();
-			for(int i = 0; i < distance.size(); i++)
-			{
-				double dist = calc.distance(uLat, uLong, distance.get(i).getLat(), distance.get(i).getLon());
-				Logger.info("The distance is "+ dist);
-				if (dist < lowestDistance)
-				{
-					lowestDistance = dist;
-					lowestName = rs.getString("name");
-				}
-			}
     		return lowestName;
     	}catch(SQLException e){
     		Logger.warn(e);
