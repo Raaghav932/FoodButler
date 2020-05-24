@@ -231,7 +231,8 @@ for(StoreInfo store:stores) {
 			String store = helper.getClosestStore((String) request.getConversationData().get("food"),(double) location.getCoordinates().getLatitude(),
 					(double) location.getCoordinates().getLongitude(), location.getZipCode());
 			Logger.info(location.getZipCode());
-		    responseBuilder.add("You can get that at " + store);
+			String name = request.getUser().getProfile().getDisplayName();
+		    responseBuilder.add(name + " You can get that at " + store);
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");
 		  }
@@ -242,7 +243,7 @@ for(StoreInfo store:stores) {
 	public ActionResponse getPermission(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  String[] permissions = new String[] {ConstantsKt.PERMISSION_NAME};
-	  String context = "To address you by name";
+	  String context = "To find stores closest to you";
 	  Keep keep = new Keep();
 	  // Location permissions only work for verified users
 	  // https://developers.google.com/actions/assistant/guest-users
@@ -285,24 +286,6 @@ for(StoreInfo store:stores) {
 //		    responseBuilder.add("Looks like I can't get your information");
 //		  }
 //		return responseBuilder.build();
-//	}
-	
-//	@ForIntent("Permission Handler")
-//	public ActionResponse handlePermission(ActionRequest request) {
-//	  ResponseBuilder responseBuilder = getResponseBuilder(request);
-//	  Location location = request.getDevice().getLocation();
-//	  String name = request.getUser().getProfile().getDisplayName();
-//
-//	  if (request.isPermissionGranted()) {
-//	    responseBuilder.add("Okay " + name + ", I see you're at " + location.getFormattedAddress());
-//	  } else {
-//	    responseBuilder.add("Looks like I can't get your information");
-//	  }
-//	  responseBuilder
-//	      .add("Would you like to try another helper?")
-//	      .addSuggestions(new String[] {"Confirmation", "DateTime", "Place"});
-//
-//	  return responseBuilder.build();
 //	}
 }
 
