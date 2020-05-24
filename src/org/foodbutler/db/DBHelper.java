@@ -59,6 +59,7 @@ public class DBHelper {
     			ArrayList<Double> distance = client.sendGet(rs.getString("name"));
     			DistanceCalculator calc = new DistanceCalculator();
     			double dist = calc.distance(uLat, uLong, distance.get(0), distance.get(1));
+    			Logger.info("The distance is "+ dist);
     			if (dist < lowestDistance)
     			{
     				lowestDistance = dist;
