@@ -228,6 +228,7 @@ for(StoreInfo store:stores) {
 		Location location = request.getDevice().getLocation();
 		if (request.isPermissionGranted()) {
 			DBHelper helper = new DBHelper();
+			Logger.info("Find Food food " + food);
 			String store = helper.getClosestStore(food,(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
 		    responseBuilder.add("You can get that at " + store);
 		  } else {
@@ -246,6 +247,7 @@ for(StoreInfo store:stores) {
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
 	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
 		  food = (String) request.getParameter("food");
+		  Logger.info("User Location food " + food);
 		  permissions =
 			    new String[] {
 			       ConstantsKt.PERMISSION_NAME, ConstantsKt.PERMISSION_DEVICE_PRECISE_LOCATION
