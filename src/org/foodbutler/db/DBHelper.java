@@ -47,12 +47,7 @@ public class DBHelper {
     	Logger.info("in the getClosestStore method");
     	Connection conn = connect();
     	Logger.info("connected to database");
-    	final String sqlSelect = "select name \n" + 
-    			"		from stores, stock\n" + 
-    			"		where stock.name = (?)\n" + 
-    			"		AND\n" + 
-    			"		stock.name_of_store = stores.name\n" + 
-    			"	)\n";
+    	final String sqlSelect = "select stores.name from stores, stock where stock.name = (?) AND stores.name = stock.name_of_store;";
     	try {
     		PreparedStatement ps = conn.prepareStatement(sqlSelect);
     		ps.setString(1, name);
