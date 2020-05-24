@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.foodbutler.Coordinates;
 import org.foodbutler.HttpClient;
 import org.foodbutler.StoreInfo;
 import org.tinylog.Logger;
@@ -57,9 +58,9 @@ public class DBHelper {
     		double lowestDistance = 1000;
     		String lowestName = "Couldn't Find anything";
     		while(rs.next()) {
-    			ArrayList<Double> distance = client.sendGet(rs.getString("name"));
+    			Coordinates distance = client.sendGet(rs.getString("name"));
     			DistanceCalculator calc = new DistanceCalculator();
-    			double dist = calc.distance(uLat, uLong, distance.get(0), distance.get(1));
+    			double dist = calc.distance(uLat, uLong, distance.getLat(), distance.getLon());
     			Logger.info("The distance is "+ dist);
     			if (dist < lowestDistance)
     			{

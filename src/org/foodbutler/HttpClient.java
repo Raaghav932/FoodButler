@@ -27,7 +27,7 @@ public class HttpClient {
         httpClient.close();
     }
 
-    public ArrayList<Double> sendGet(String store) throws Exception {
+    public Coordinates sendGet(String store) throws Exception {
 
         HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+"&format=json");
         ArrayList<Double> distance = new ArrayList<Double>();
@@ -38,11 +38,11 @@ public class HttpClient {
             //Logger.info(result);
         	JSONArray json = new JSONArray(result);
         	JSONObject e = json.getJSONObject(1);
-        	double lat = (double) e.get("lat");
-        	double lon = (double) e.get("lon");
-        	distance.add(lat);
-        	distance.add(lon);
-        	return distance;
+        	String lat = (String) e.get("lat");
+        	String lon = (String) e.get("lon");
+        	
+        	Coordinates coordinate = new Coordinates(lat, lon);
+        	return coordinate;
         }
 
     }
