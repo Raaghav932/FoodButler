@@ -228,7 +228,8 @@ for(StoreInfo store:stores) {
 		if (request.isPermissionGranted()) {
 			DBHelper helper = new DBHelper();
 			Logger.info("FindFood food " +(String) request.getConversationData().get("food"));
-			String store = helper.getClosestStore((String) request.getConversationData().get("food"),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
+			String store = helper.getClosestStore((String) request.getConversationData().get("food"),(double) location.getCoordinates().getLatitude(),
+					(double) location.getCoordinates().getLongitude(), location.getZipCode());
 		    responseBuilder.add("You can get that at " + store);
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");

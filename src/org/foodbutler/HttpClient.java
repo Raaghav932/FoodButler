@@ -27,22 +27,26 @@ public class HttpClient {
         httpClient.close();
     }
 
-    public Coordinates sendGet(String store) throws Exception {
+    public ArrayList<Coordinates> sendGet(String store, String zip) throws Exception {
 
-        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+"&format=json");
+        HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+zip+"&format=json");
         ArrayList<Double> distance = new ArrayList<Double>();
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity);
-            
+            ArrayList<Coordinates> coords = new ArrayList<Coordinates>();
             //Logger.info(result);
         	JSONArray json = new JSONArray(result);
+        	for (int i = 0; i < json.length(); i++)
+        	{
         	JSONObject e = json.getJSONObject(1);
         	String lat = (String) e.get("lat");
         	String lon = (String) e.get("lon");
-        	
         	Coordinates coordinate = new Coordinates(lat, lon);
-        	return coordinate;
+        	coords.add(coordinate);
+        	}
+        	
+        	return coords;
         }
 
     }

@@ -42,13 +42,14 @@ public class DBHelper {
 
         return conn;
     }
-    public String getClosestStore(String name, double uLat, double uLong){
+    public String getClosestStore(String name, double uLat, double uLong, String zip){
     	uLat = uLat + 0;
     	uLong = uLong + 0;
     	Logger.info("in the getClosestStore method");
     	Connection conn = connect();
     	Logger.info("connected to database");
     	Logger.info("The store you searched for " + name);
+    	ArrayList<Coordinates> distance = new ArrayList<Coordinates>();
     	final String sqlSelect = "select stores.name from stores, stock where stock.name = (?) AND stores.name = stock.name_of_store;";
     	try {
     		PreparedStatement ps = conn.prepareStatement(sqlSelect);
@@ -58,16 +59,19 @@ public class DBHelper {
     		double lowestDistance = 1000;
     		String lowestName = "Couldn't Find anything";
     		while(rs.next()) {
-    			Coordinates distance = client.sendGet(rs.getString("name"));
-    			DistanceCalculator calc = new DistanceCalculator();
-    			double dist = calc.distance(uLat, uLong, distance.getLat(), distance.getLon());
-    			Logger.info("The distance is "+ dist);
-    			if (dist < lowestDistance)
-    			{
-    				lowestDistance = dist;
-    				lowestName = rs.getString("name");
-    			}
+    			distance = client.sendGet(rs.getString("name"), zip);
     		}
+    		DistanceCalculator calc = new DistanceCalculator();
+			for(int i = 0; i < distance.size(); i++)
+			{
+				double dist = calc.distance(uLat, uLong, distance.get(i).getLat(), distance.get(i).getLon());
+				Logger.info("The distance is "+ dist);
+				if (dist < lowestDistance)
+				{
+					lowestDistance = dist;
+					lowestName = rs.getString("name");
+				}
+			}
     		return lowestName;
     	}catch(SQLException e){
     		Logger.warn(e);

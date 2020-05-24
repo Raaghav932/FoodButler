@@ -17,6 +17,6 @@ public class FoodButler {
 	@Path("search")
 	public String getResults(@QueryParam("search")String search){
 		DBHelper result = new DBHelper();
-		return result.getClosestStore(search,40.15, -105.14);
+		return result.getClosestStore(search,40.15, -105.14,"80503");
 	}
 }
