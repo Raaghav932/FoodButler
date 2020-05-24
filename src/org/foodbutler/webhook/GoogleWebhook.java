@@ -43,7 +43,7 @@ import com.google.api.services.actions_fulfillment.v2.model.Location;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GoogleWebhook extends DialogflowApp{
-	String food = "";
+	Keep keep;
 	@POST
 	@Path("webhook")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -228,8 +228,8 @@ for(StoreInfo store:stores) {
 		Location location = request.getDevice().getLocation();
 		if (request.isPermissionGranted()) {
 			DBHelper helper = new DBHelper();
-			Logger.info("Find Food food " + food);
-			String store = helper.getClosestStore(food,(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
+			Logger.info("Find Food food " + keep.getFood());
+			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
 		    responseBuilder.add("You can get that at " + store);
 		  } else {
 		    responseBuilder.add("Looks like I can't get your information");
@@ -246,8 +246,8 @@ for(StoreInfo store:stores) {
 	  // https://developers.google.com/actions/assistant/guest-users
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
 	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
-		  food = (String) request.getParameter("Food");
-		  Logger.info("User Location food " + food);
+		  keep.setFood((String) request.getParameter("Food"));
+		  Logger.info("User Location food " + keep.getFood());
 		  permissions =
 			    new String[] {
 			       ConstantsKt.PERMISSION_NAME, ConstantsKt.PERMISSION_DEVICE_PRECISE_LOCATION
