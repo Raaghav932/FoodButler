@@ -246,7 +246,7 @@ for(StoreInfo store:stores) {
 	  // https://developers.google.com/actions/assistant/guest-users
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
 	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
-		  food = (String) request.getParameter("food");
+		  food = (String) request.getParameter("Food");
 		  Logger.info("User Location food " + food);
 		  permissions =
 			    new String[] {
