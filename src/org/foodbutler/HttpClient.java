@@ -35,17 +35,16 @@ public class HttpClient {
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity);
             ArrayList<Coordinates> coords = new ArrayList<Coordinates>();
-            //Logger.info(result);
+            Logger.info(result);
         	JSONArray json = new JSONArray(result);
         	for (int i = 0; i < json.length(); i++)
         	{
-        	JSONObject e = json.getJSONObject(1);
-        	String lat = (String) e.get("lat");
-        	String lon = (String) e.get("lon");
-        	Coordinates coordinate = new Coordinates(lat, lon);
-        	coords.add(coordinate);
+        		JSONObject e = json.getJSONObject(i);
+        		String lat = (String) e.get("lat");
+        		String lon = (String) e.get("lon");
+            	Coordinates coordinate = new Coordinates(lat, lon);
+            	coords.add(coordinate);
         	}
-        	
         	return coords;
         }
 
