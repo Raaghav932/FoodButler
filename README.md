@@ -42,7 +42,7 @@ The sql dump is in `Other/sqlfile.sql`.
 #### 4. Webhook
 The webhook is coded in Java and it is hosted on Heroku using tomcat.
 Maven is used to assemble the webapp.
-The 'GoogleWebhook.java' gets the call from Google Assistant and then it access the databuse using the `DBHelper.java'
+The `GoogleWebhook.java` gets the call from Google Assistant and then it access the databuse using the `DBHelper.java`
 and gets the geocoordinates from `HTTPClient.java` and then calculates the distance using the `DistanceCalculator.java`.
 
 
