@@ -11,8 +11,8 @@ import org.foodbutler.db.DBHelper;
 public class FoodButler {
 	@GET
 	@Path("search")
-	public String getResults(@QueryParam("search")String search){
+	public int getResults(@QueryParam("search")String search){
 		DBHelper result = new DBHelper();
-		return result.getClosestStore(search);
+		return 0;
 	}
 }
