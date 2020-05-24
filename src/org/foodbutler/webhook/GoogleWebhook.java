@@ -221,19 +221,20 @@ for(StoreInfo store:stores) {
 	  return responseBuilder.add(response).build();
 	}
 	
-//	@ForIntent("FindFood")
-//	public ActionResponse FindFood(ActionRequest request) {
-//		ResponseBuilder responseBuilder = getResponseBuilder(request);
-//		Location location = request.getDevice().getLocation();
-//		if (request.isPermissionGranted()) {
-//			DBHelper helper = new DBHelper();
-//			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
-//		    responseBuilder.add("You can get that at " + store);
-//		  } else {
-//		    responseBuilder.add("Looks like I can't get your information");
-//		  }
-//		return responseBuilder.build();
-//	}
+	@ForIntent("FindFood")
+	public ActionResponse FindFood(ActionRequest request) {
+		ResponseBuilder responseBuilder = getResponseBuilder(request);
+		Location location = request.getDevice().getLocation();
+		if (request.isPermissionGranted()) {
+			DBHelper helper = new DBHelper();
+			Logger.info("FindFood food " +(String) request.getConversationData().get("food"));
+			String store = helper.getClosestStore((String) request.getConversationData().get("food"),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
+		    responseBuilder.add("You can get that at " + store);
+		  } else {
+		    responseBuilder.add("Looks like I can't get your information");
+		  }
+		return responseBuilder.build();
+	}
 	
 	@ForIntent("user_location")
 	public ActionResponse getPermission(ActionRequest request) {
@@ -246,24 +247,16 @@ for(StoreInfo store:stores) {
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
 	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
 		  keep.setFood((String) request.getParameter("Food"));
-		  Logger.info("User Location food " + keep.getFood());
+		  Logger.info("User Location food " + request.getParameter("Food"));
+		  request.getConversationData().put("food", request.getParameter("Food"));
 		  permissions =
 			    new String[] {
 			       ConstantsKt.PERMISSION_NAME, ConstantsKt.PERMISSION_DEVICE_PRECISE_LOCATION
 			  };
 	  	}
-	  Location location = request.getDevice().getLocation();
-		if (request.isPermissionGranted()) {
-			DBHelper helper = new DBHelper();
-			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
-		    responseBuilder.add("You can get that at " + store);
-		  } else {
-		    responseBuilder.add("Looks like I can't get your information");
-		  }
 	  responseBuilder
 	      .add("PLACEHOLDER")
 	      .add(new Permission().setPermissions(permissions).setContext(context));
-
 	  return responseBuilder.build();
 	}
 	
