@@ -43,7 +43,6 @@ import com.google.api.services.actions_fulfillment.v2.model.Location;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GoogleWebhook extends DialogflowApp{
-	Keep keep;
 	@POST
 	@Path("webhook")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -222,31 +221,30 @@ for(StoreInfo store:stores) {
 	  return responseBuilder.add(response).build();
 	}
 	
-	@ForIntent("FindFood")
-	public ActionResponse FindFood(ActionRequest request) {
-		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		Location location = request.getDevice().getLocation();
-		if (request.isPermissionGranted()) {
-			DBHelper helper = new DBHelper();
-			Logger.info("Find Food food " + keep.getFood());
-			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
-		    responseBuilder.add("You can get that at " + store);
-		  } else {
-		    responseBuilder.add("Looks like I can't get your information");
-		  }
-		return responseBuilder.build();
-	}
+//	@ForIntent("FindFood")
+//	public ActionResponse FindFood(ActionRequest request) {
+//		ResponseBuilder responseBuilder = getResponseBuilder(request);
+//		Location location = request.getDevice().getLocation();
+//		if (request.isPermissionGranted()) {
+//			DBHelper helper = new DBHelper();
+//			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
+//		    responseBuilder.add("You can get that at " + store);
+//		  } else {
+//		    responseBuilder.add("Looks like I can't get your information");
+//		  }
+//		return responseBuilder.build();
+//	}
 	
 	@ForIntent("user_location")
 	public ActionResponse getPermission(ActionRequest request) {
 	  ResponseBuilder responseBuilder = getResponseBuilder(request);
 	  String[] permissions = new String[] {ConstantsKt.PERMISSION_NAME};
 	  String context = "To address you by name";
+	  Keep keep = new Keep();
 	  // Location permissions only work for verified users
 	  // https://developers.google.com/actions/assistant/guest-users
 	  if (request.getUser().getUserVerificationStatus().equals("VERIFIED")) {
 	    // Could use PERMISSION_DEVICE_COARSE_LOCATION instead for city, zip code
-		  keep = new Keep();
 		  keep.setFood((String) request.getParameter("Food"));
 		  Logger.info("User Location food " + keep.getFood());
 		  permissions =
@@ -254,6 +252,14 @@ for(StoreInfo store:stores) {
 			       ConstantsKt.PERMISSION_NAME, ConstantsKt.PERMISSION_DEVICE_PRECISE_LOCATION
 			  };
 	  	}
+	  Location location = request.getDevice().getLocation();
+		if (request.isPermissionGranted()) {
+			DBHelper helper = new DBHelper();
+			String store = helper.getClosestStore(keep.getFood(),(double) location.getCoordinates().getLatitude(), (double) location.getCoordinates().getLongitude());
+		    responseBuilder.add("You can get that at " + store);
+		  } else {
+		    responseBuilder.add("Looks like I can't get your information");
+		  }
 	  responseBuilder
 	      .add("PLACEHOLDER")
 	      .add(new Permission().setPermissions(permissions).setContext(context));
