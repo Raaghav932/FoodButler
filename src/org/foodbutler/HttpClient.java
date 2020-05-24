@@ -18,7 +18,8 @@ import org.tinylog.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 public class HttpClient {
     // one instance, reuse
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -28,7 +29,7 @@ public class HttpClient {
     }
 
     public ArrayList<Coordinates> sendGet(String store, String zip) throws Exception {
-
+    	store = URLEncoder.encode(store, StandardCharsets.UTF_8.toString());
         HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+"+"+zip+"&format=json");
         Logger.info(request);
         ArrayList<Double> distance = new ArrayList<Double>();
