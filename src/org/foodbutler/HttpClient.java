@@ -30,6 +30,7 @@ public class HttpClient {
     public ArrayList<Coordinates> sendGet(String store, String zip) throws Exception {
 
         HttpGet request = new HttpGet("https://us1.locationiq.com/v1/search.php?key=2951728dd8363f&q="+store+zip+"&format=json");
+        Logger.info(request);
         ArrayList<Double> distance = new ArrayList<Double>();
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
