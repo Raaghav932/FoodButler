@@ -101,46 +101,6 @@ public class GoogleWebhook extends DialogflowApp{
 										 .build();
 		return response;
 	}
-	
-	@ForIntent("GoodBoyIntent")
-	public ActionResponse goodBoy(ActionRequest request) {
-		ResponseBuilder builder = getResponseBuilder(request);
-		
-		//Google speach
-		SimpleResponse simple = new SimpleResponse();
-		simple.setTextToSpeech("Raaghav is a good boy");
-		
-		
-		//Google ui
-		BasicCard card = new BasicCard();
-		card.setTitle("Good Boy");
-		card.setFormattedText("Raaghav is a good boy");
-		
-		
-		ActionResponse response = builder.add(simple)
-										 .add(card)
-										 .build();
-		return response;
-	}
-	
-	@ForIntent("BadBoyIntent")
-	public ActionResponse badBoy(ActionRequest request) {
-		ResponseBuilder builder = getResponseBuilder(request);
-		
-		//Google speach
-		SimpleResponse simple = new SimpleResponse();
-		simple.setTextToSpeech("Voldemort is a bad boy");
-		
-		
-		//Google ui
-		BasicCard card = new BasicCard();
-		card.setTitle("Bad Boy");
-		card.setFormattedText("Voldemort is a bad boy");
-		ActionResponse response = builder.add(simple)
-										 .add(card)
-										 .build();
-		return response;
-	}
 	@ForIntent("GetStoresIntent")
 	public ActionResponse listStores(ActionRequest request) {
 		String listofstores = "Here are the stores I know ";
