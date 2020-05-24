@@ -263,30 +263,30 @@ for(StoreInfo store:stores) {
 	  return responseBuilder.build();
 	}
 	
-//	@ForIntent("FindStore")
-//	public ActionResponse FindStore(ActionRequest request) throws Exception {
-//		ResponseBuilder responseBuilder = getResponseBuilder(request);
-//		Location location = request.getPlace();
-//		//String name = request.getUser().getProfile().getDisplayName();
-//		HttpClient client = new HttpClient();
-//		String store = (String) request.getParameter("store");
-//		for(int i = 0; i < store.length(); i++){
-//			if(store.charAt(i) == 32) {
-//			   String temp = store.substring(0,i-1) + "%20" + store.substring(i+1,store.length());
-//			   store = temp;
-//			}
-//		}
+	@ForIntent("FindStore")
+	public ActionResponse FindStore(ActionRequest request) throws Exception {
+		ResponseBuilder responseBuilder = getResponseBuilder(request);
+		Location location = request.getPlace();
+		//String name = request.getUser().getProfile().getDisplayName();
+		HttpClient client = new HttpClient();
+		String store = (String) request.getParameter("store");
+		for(int i = 0; i < store.length(); i++){
+			if(store.charAt(i) == 32) {
+			   String temp = store.substring(0,i-1) + "%20" + store.substring(i+1,store.length());
+			   store = temp;
+			}
+		}
 //		ArrayList<String> distance = client.sendGet(store);
 //		responseBuilder.add(distance.get(0));
 //		responseBuilder.add(distance.get(1));
-//		if (request.isPermissionGranted()) {
-//			Logger.info(location);
-//		    responseBuilder.add("Okay " + ", I see you're at " + location.getFormattedAddress());
-//		  } else {
-//		    responseBuilder.add("Looks like I can't get your information");
-//		  }
-//		return responseBuilder.build();
-//	}
+		if (request.isPermissionGranted()) {
+			Logger.info(location);
+		    responseBuilder.add("Okay " + ", I see you're at " + location.getFormattedAddress());
+		  } else {
+		    responseBuilder.add("Looks like I can't get your information");
+		  }
+		return responseBuilder.build();
+	}
 }
 
 

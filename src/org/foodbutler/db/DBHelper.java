@@ -59,6 +59,7 @@ public class DBHelper {
     		double lowestDistance = 1000;
     		String lowestName = "Couldn't Find anything";
     		while(rs.next()) {
+    			Thread.sleep(1000);
     			distance = (client.sendGet(rs.getString("name"), zip));
     	   		DistanceCalculator calc = new DistanceCalculator();
     			for(int i = 0; i < distance.size(); i++)
